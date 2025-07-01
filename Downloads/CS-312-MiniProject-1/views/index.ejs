@@ -1,0 +1,76 @@
+<%- include('_header'); -%>
+
+<body class="bg-light">
+  <div class="container" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 300; padding-top: 20px;">
+
+    <h1 class="text-center" style="font-family: 'Poppins', sans-serif; font-weight: 600; margin-bottom: 30px;">
+      Welcome to the Blog App
+    </h1>
+
+    <!-- user info + sign out -->
+    <p>Logged in as <strong><%= user.name %> (<%= user.user_id %>)</strong></p>
+    <form action="/signout" method="POST" style="display:inline;">
+      <button type="submit" class="btn btn-secondary btn-sm">Sign Out</button>
+    </form>
+    <hr>
+
+    <!-- form to create a new post -->
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title">Create a New Blog Post</h3>
+      </div>
+      <div class="panel-body">
+        <form action="/posts" method="POST">
+          <div class="form-group">
+            <label for="title" style="color: #333;">Blog Title:</label>
+            <input type="text" id="title" name="title" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="content" style="color: #333;">Blog Content:</label>
+            <textarea id="content" name="content" class="form-control" rows="4" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-success">Post Blog</button>
+        </form>
+      </div>
+    </div>
+
+    <hr>
+
+    <!-- list of blog posts -->
+    <h2 style="color: #333;">All Blog Posts</h2>
+
+    <% if (posts.length === 0) { %>
+      <div class="alert alert-info">No posts yet. Be the first to post!</div>
+    <% } else { %>
+      <% posts.forEach(function(post) { %>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><%= post.title %></h3>
+            <small>
+              By <strong><%= post.creator_name %></strong> 
+              <% if (post.creator_user_id === user.user_id) { %>(you)<% } %>
+              on <%= new Date(post.created_at).toLocaleString() %>
+            </small>
+          </div>
+          <div class="panel-body">
+            <p style="color: #333;"><%= post.content %></p>
+
+            <% if (post.creator_user_id === user.user_id) { %>
+              <div class="btn-group">
+                <form action="/posts/<%= post.blog_id %>/edit" method="GET" style="display:inline;">
+                  <button type="submit" class="btn btn-warning btn-sm">Edit</button>
+                </form>
+                <form action="/posts/<%= post.blog_id %>/delete" method="POST" style="display:inline;">
+                  <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+              </div>
+            <% } %>
+
+          </div>
+        </div>
+      <% }); %>
+    <% } %>
+  </div>
+</body>
+
+<%- include('_footer'); -%>

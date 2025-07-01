@@ -1,0 +1,29 @@
+<%- include('_header') -%>
+
+<!-- page title -->
+<h1>sign in form</h1>
+
+<!-- show error message if login failed -->
+<% if (error) { %>
+  <div class="alert alert-danger"><%= error %></div>
+<% } %>
+
+<!-- form to submit user id and password -->
+<form action="/signin" method="POST">
+  <div class="form-group">
+    <label for="user_id">user id</label>
+    <input type="text" name="user_id" id="user_id" class="form-control" required>
+  </div>
+
+  <div class="form-group">
+    <label for="password">password</label>
+    <input type="password" name="password" id="password" class="form-control" required>
+  </div>
+
+  <button type="submit" class="btn btn-primary">sign in</button>
+</form>
+
+<!-- link to signup page if no account -->
+<p>dont have an account? <a href="/signup">sign up here</a></p>
+
+<%- include('_footer') -%>
